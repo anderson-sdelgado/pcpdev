@@ -2,11 +2,11 @@
 
 $info = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-require_once('../control/MotoMecFertCTR.class.php');
+require_once('../control/MovVeicVisitTercCTR.class.php');
 
 if (isset($info)):
 
-    $motoMecFertCTR = new MotoMecFertCTR();
-    echo $motoMecFertCTR->salvarBolAbertoMMFert($info);
+    $movVeicVisitTercCTR = new MovVeicVisitTercCTR();
+    echo $movVeicVisitTercCTR->salvarMovVeicVisitTerc($info);
 
 endif;

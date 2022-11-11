@@ -4,7 +4,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
-require_once('../dbutil/ConnAPEX.class.php');
+require_once('../dbutil/OCIAPEX.class.php');
 /**
  * Description of MovEquipSegProprioDAO
  *
@@ -27,12 +27,11 @@ class MovEquipSegProprioDAO extends OCIAPEX {
         $stid = oci_parse($this->Conn, $select);
         oci_execute($stid);
 
-        while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
-            foreach ($row as $item) {
-                $v = $item[0];
-            }
+        while (oci_fetch($stid)) {
+            $v = oci_result($stid, 'QTDE');
         }
 
+        oci_free_statement($stid);
         return $v;
         
     }

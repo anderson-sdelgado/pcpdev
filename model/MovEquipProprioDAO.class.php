@@ -4,7 +4,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
-require_once('../dbutil/ConnAPEX.class.php');
+require_once('../dbutil/OCIAPEX.class.php');
 /**
  * Description of MovEquipProprioDAO
  *
@@ -27,19 +27,18 @@ class MovEquipProprioDAO extends OCIAPEX {
         $stid = oci_parse($this->Conn, $select);
         oci_execute($stid);
 
-        while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
-            foreach ($row as $item) {
-                $v = $item[0];
-            }
+        while (oci_fetch($stid)) {
+            $v = oci_result($stid, 'QTDE');
         }
 
+        oci_free_statement($stid);
         return $v;
     }
 
     public function idMovEquip($movEquip) {
 
         $select = " SELECT "
-                        . " ID AS ID "
+                        . " ID "
                     . " FROM "
                         . " MOV_EQUIP_PORTARIA "
                     . " WHERE "
@@ -51,30 +50,15 @@ class MovEquipProprioDAO extends OCIAPEX {
         $stid = oci_parse($this->Conn, $select);
         oci_execute($stid);
 
-        while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
-            foreach ($row as $item) {
-                $v = $item[0];
-            }
+        while (oci_fetch($stid)) {
+            $v = oci_result($stid, 'ID');
         }
 
+        oci_free_statement($stid);
         return $v;
     }
 
     public function insMovEquip($movEquip) {
-//
-//        if ($movEquip->descrDestinoMovEquipProprio != 'null') {
-//            $movEquip->descrDestinoMovEquipProprio = "'" . str_replace(array("#", "'", ";", "*", "%", "$", "@", "!", "{", "}", "[", "]", "(", ")"), '', $movEquip->descrDestinoMovEquipProprio) . "'";
-//        }
-//        
-//        if ($movEquip->nroNotaFiscalMovEquipProprio == 0) {
-//            $movEquip->nroNotaFiscalMovEquipProprio = 'null';
-//        }
-//        
-//        if ($movEquip->observacaoMovEquipProprio != 'null') {
-//            $movEquip->observacaoMovEquipProprio = "'" . str_replace(array("#", "'", ";", "*", "%", "$", "@", "!", "{", "}", "[", "]", "(", ")"), '', $movEquip->observacaoMovEquipProprio) . "'";
-//        } else {
-//            $movEquip->observacaoMovEquipProprio = 'null';
-//        }
 
         $sql = "INSERT INTO MOV_EQUIP_PORTARIA ("
                             . " DTHR "
@@ -103,7 +87,7 @@ class MovEquipProprioDAO extends OCIAPEX {
 
         $this->OCI = parent::getConn();
         $result = oci_parse($this->OCI, $sql);
-        oci_bind_by_name($result, ":dthr", $movEquip->dthrInicialCabecViagem);
+        oci_bind_by_name($result, ":dthr", $movEquip->dthrMovEquipProprio);
         oci_bind_by_name($result, ":tipo", $movEquip->tipoMovEquipProprio);
         oci_bind_by_name($result, ":idEquip", $movEquip->idEquipMovEquipProprio);
         oci_bind_by_name($result, ":matricVigia", $movEquip->nroMatricVigiaMovEquipProprio);

@@ -4,7 +4,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
-require_once('../dbutil/ConnAPEX.class.php');
+require_once('../dbutil/OCIAPEX.class.php');
 /**
  * Description of MovEquipVisitTercDAO
  *
@@ -24,40 +24,19 @@ class MovEquipVisitTercDAO extends OCIAPEX {
                         . " ID_VISITANTE_TERCEIRO = " . $movEquip->idVisitTercMovEquipVisitTerc;
 
         $this->Conn = parent::getConn();
-        $this->Read = $this->Conn->prepare($select);
-        $this->Read->setFetchMode(PDO::FETCH_ASSOC);
-        $this->Read->execute();
-        $result = $this->Read->fetchAll();
+        $stid = oci_parse($this->Conn, $select);
+        oci_execute($stid);
 
-        foreach ($result as $item) {
-            $v = $item['QTDE'];
+        while (oci_fetch($stid)) {
+            $v = oci_result($stid, 'QTDE');
         }
 
+        oci_free_statement($stid);
         return $v;
     }
 
     public function insMovEquip($movEquip) {
 
-        if ($movEquip->placaMovEquipVisitTerc != 'null') {
-            $movEquip->placaMovEquipVisitTerc = "'" . str_replace(array("#", "'", ";", "*", "%", "$", "@", "!", "{", "}", "[", "]", "(", ")"), '', $movEquip->placaMovEquipVisitTerc) . "'";
-        }
-        
-        if ($movEquip->veiculoMovEquipVisitTerc != 'null') {
-            $movEquip->veiculoMovEquipVisitTerc = "'" . str_replace(array("#", "'", ";", "*", "%", "$", "@", "!", "{", "}", "[", "]", "(", ")"), '', $movEquip->veiculoMovEquipVisitTerc) . "'";
-        }
-        
-        if ($movEquip->destinoMovEquipVisitTerc != 'null') {
-            $movEquip->destinoMovEquipVisitTerc = "'" . str_replace(array("#", "'", ";", "*", "%", "$", "@", "!", "{", "}", "[", "]", "(", ")"), '', $movEquip->destinoMovEquipVisitTerc) . "'";
-        } else {
-            $movEquip->destinoMovEquipVisitTerc = 'null';
-        }
-        
-        if ($movEquip->observacaoMovEquipVisitTerc != 'null') {
-            $movEquip->observacaoMovEquipVisitTerc = "'" . str_replace(array("#", "'", ";", "*", "%", "$", "@", "!", "{", "}", "[", "]", "(", ")"), '', $movEquip->observacaoMovEquipVisitTerc) . "'";
-        } else {
-            $movEquip->observacaoMovEquipVisitTerc = 'null';
-        }
-        
         $sql = "INSERT INTO MOV_EQUIP_TERC_PORTARIA ("
                         . " DTHR "
                         . " , DTHR_CEL "
@@ -72,22 +51,32 @@ class MovEquipVisitTercDAO extends OCIAPEX {
                         . " , OBSERVACAO "
                     . " )"
                     . " VALUES ("
-                        . " TO_DATE('" . $movEquip->dthrMovEquipVisitTerc . "' , 'DD/MM/YYYY HH24:MI')"
-                        . " , TO_DATE('" . $movEquip->dthrMovEquipVisitTerc . "' , 'DD/MM/YYYY HH24:MI')"
+                        . " TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
+                        . " , TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
                         . " , SYSDATE "
-                        . " , " . $movEquip->tipoMovEquipVisitTerc
-                        . " , " . $movEquip->idVisitTercMovEquipVisitTerc
-                        . " , " . $movEquip->tipoVisitTercMovEquipVisitTerc
-                        . " , " . $movEquip->nroMatricVigiaMovEquipProprio
-                        . " , " . $movEquip->placaMovEquipVisitTerc
-                        . " , " . $movEquip->veiculoMovEquipVisitTerc
-                        . " , " . $movEquip->destinoMovEquipVisitTerc
-                        . " , " . $movEquip->observacaoMovEquipVisitTerc
+                        . " , :tipo "
+                        . " , :idVisitTerc "
+                        . " , :tipoVisitTerc "
+                        . " , :matricVigia "
+                        . " , :placa "
+                        . " , :veiculo "
+                        . " , :destino "
+                        . " , :observacao "
                     . " )";
-
-        $this->Conn = parent::getConn();
-        $this->Create = $this->Conn->prepare($sql);
-        $this->Create->execute();
+        
+        $this->OCI = parent::getConn();
+        $result = oci_parse($this->OCI, $sql);
+        oci_bind_by_name($result, ":dthr", $movEquip->dthrMovEquipVisitTerc);
+        oci_bind_by_name($result, ":tipo", $movEquip->tipoMovEquipVisitTerc);
+        oci_bind_by_name($result, ":idVisitTerc", $movEquip->idVisitTercMovEquipVisitTerc);
+        oci_bind_by_name($result, ":tipoVisitTerc", $movEquip->tipoVisitTercMovEquipVisitTerc);
+        oci_bind_by_name($result, ":matricVigia", $movEquip->nroMatricVigiaMovEquipVisitTerc);
+        oci_bind_by_name($result, ":placa", $movEquip->placaMovEquipVisitTerc);
+        oci_bind_by_name($result, ":veiculo", $movEquip->veiculoMovEquipVisitTerc);
+        oci_bind_by_name($result, ":destino", $movEquip->destinoMovEquipVisitTerc);
+        oci_bind_by_name($result, ":observacao", $movEquip->observacaoMovEquipVisitTerc);
+        oci_execute($result);
+        
     }
 
 }

@@ -16,12 +16,9 @@ class MovVeicVisitTercCTR {
 
         $dados = $info['dado'];
 
-        $posicao = strpos($dados, "_") + 1;
-        $movEquipVisitTercDAO = substr($dados, 0, ($posicao - 1));
+        $jsonObjEquipVisitTerc = json_decode($dados);
 
-        $jsonObjEquipVisitTercDAO = json_decode($movEquipVisitTercDAO);
-
-        $dadosEquipVisitTercDAO = $jsonObjEquipVisitTercDAO->movequipproprio;
+        $dadosEquipVisitTercDAO = $jsonObjEquipVisitTerc->movequipvisitterc;
 
         return $this->salvarMovEquipVisitTerc($dadosEquipVisitTercDAO);
 

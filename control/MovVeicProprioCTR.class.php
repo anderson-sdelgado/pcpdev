@@ -42,7 +42,7 @@ class MovVeicProprioCTR {
                 $movEquipProprioDAO->insMovEquip($movEquipProprio);
             }
             $idMovEquipProprioBD = $movEquipProprioDAO->idMovEquip($movEquipProprio);
-            $this->salvarPassageiro($idMovEquipProprioBD, $movEquipProprio->idMovEquipProprio, $dadosMovEquipSegProprio);
+            $this->salvarMovEquipSegProprio($idMovEquipProprioBD, $movEquipProprio->idMovEquipProprio, $dadosMovEquipSegProprio);
             $idMovEquipProprioArray[] = array("idMovEquipProprio" => $movEquipProprio->idMovEquipProprio);
         }
                 

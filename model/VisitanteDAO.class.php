@@ -24,7 +24,7 @@ class VisitanteDAO extends Conn {
         $select = " SELECT " 
                             . " VISITANTES_ID AS \"idVisitante\" "
                             . " , DECODE(CD_IDENT, NULL, PK_SF_UTIL.FKG_MASCARA_CPF(CPF), CD_IDENT) AS \"cpfVisitante\" "
-                            . " , NOM_VIS AS NOME_VISITANTE AS \"nomeVisitante\" "
+                            . " , NOM_VIS AS \"nomeVisitante\" "
                         . " FROM "
                             . " VISITANTES ";
 
