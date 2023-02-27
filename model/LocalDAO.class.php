@@ -4,24 +4,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
-require_once('../dbutil/OCI.class.php');
+require_once('../dbutil/OCIAPEX.class.php');
 /**
- * Description of VisitanteDAO
+ * Description of LocalDAO
  *
  * @author anderson
  */
-class VisitanteDAO extends Conn {
+class LocalDAO extends Conn {
 
     private $Conn;
 
     public function dados() {
 
-        $select = " SELECT " 
-                            . " VISITANTES_ID AS \"idVisitante\" "
-                            . " , DECODE(CD_IDENT, NULL, PK_SF_UTIL.FKG_MASCARA_CPF(CPF), CD_IDENT) AS \"cpfVisitante\" "
-                            . " , NOM_VIS AS \"nomeVisitante\" "
-                        . " FROM "
-                            . " VISITANTES ";
+        $select = " SELECT "
+                        . " ID AS \"idLocal\" "
+                        . " , DESCR AS \"descrLocal\" "
+                    . " FROM "
+                        . " PORTARIA_LOCAL "
+                    . " ORDER BY DESCR ASC ";
 
         $this->Conn = parent::getConn();
         $statement = oci_parse($this->Conn, $select);

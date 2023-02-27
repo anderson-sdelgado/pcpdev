@@ -1,9 +1,8 @@
 <?php
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
 
 /**
@@ -11,7 +10,7 @@
  *
  * @author anderson
  */
-class OCIAPEX {
+class OCI {
     
     private static $Connect = null;
 
@@ -24,11 +23,11 @@ class OCIAPEX {
                             (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.2.10)(PORT = 1521))
                             (CONNECT_DATA =
                               (SERVER = DEDICATED)
-                              (SERVICE_NAME = APEXDEV)
+                              (SERVICE_NAME = STAFEDEV)
                             )
                           )";
 
-                self::$Connect = oci_connect('STAFE', 'STA1553', $tns, 'AL32UTF8');
+                self::$Connect = oci_connect('INTERFACE', 'FGBNY946', $tns, 'AL32UTF8');
                 
             }
         } catch (PDOException $e) {

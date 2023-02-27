@@ -7,6 +7,7 @@
  */
 require_once('../model/ColabDAO.class.php');
 require_once('../model/EquipDAO.class.php');
+require_once('../model/LocalDAO.class.php');
 require_once('../model/TerceiroDAO.class.php');
 require_once('../model/VisitanteDAO.class.php');
 /**
@@ -32,6 +33,17 @@ class BaseDadosCTR {
         $equipDAO = new EquipDAO();
 
         $dados = array("dados" => $equipDAO->dados());
+        $retJson = json_encode($dados);
+
+        return $retJson;
+
+    }
+        
+    public function dadosLocal() {
+
+        $localDAO = new LocalDAO();
+
+        $dados = array("dados" => $localDAO->dados());
         $retJson = json_encode($dados);
 
         return $retJson;

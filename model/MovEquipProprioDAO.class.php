@@ -17,11 +17,13 @@ class MovEquipProprioDAO extends OCIAPEX {
         $select = " SELECT "
                         . " COUNT(*) AS QTDE "
                     . " FROM "
-                        . " MOV_EQUIP_PORTARIA "
+                        . " PORTARIA_MOV_EQUIP_PROPRIO "
                     . " WHERE "
                         . " DTHR_CEL = TO_DATE('" . $movEquip->dthrMovEquipProprio . "','DD/MM/YYYY HH24:MI')"
                         . " AND "
-                        . " EQUIP_ID = " . $movEquip->idEquipMovEquipProprio;
+                        . " EQUIP_ID = " . $movEquip->idEquipMovEquipProprio
+                        . " AND "
+                        . " CEL_ID = " . $movEquip->idMovEquipProprio;
 
         $this->Conn = parent::getConn();
         $stid = oci_parse($this->Conn, $select);
@@ -40,11 +42,13 @@ class MovEquipProprioDAO extends OCIAPEX {
         $select = " SELECT "
                         . " ID "
                     . " FROM "
-                        . " MOV_EQUIP_PORTARIA "
+                        . " PORTARIA_MOV_EQUIP_PROPRIO "
                     . " WHERE "
                         . " DTHR_CEL = TO_DATE('" . $movEquip->dthrMovEquipProprio . "' , 'DD/MM/YYYY HH24:MI')"
                         . " AND "
-                        . " EQUIP_ID = " . $movEquip->idEquipMovEquipProprio;
+                        . " EQUIP_ID = " . $movEquip->idEquipMovEquipProprio
+                        . " AND "
+                        . " CEL_ID = " . $movEquip->idMovEquipProprio;
 
         $this->Conn = parent::getConn();
         $stid = oci_parse($this->Conn, $select);
@@ -60,41 +64,47 @@ class MovEquipProprioDAO extends OCIAPEX {
 
     public function insMovEquip($movEquip) {
 
-        $sql = "INSERT INTO MOV_EQUIP_PORTARIA ("
+        $sql = "INSERT INTO PORTARIA_MOV_EQUIP_PROPRIO ("
                             . " DTHR "
                             . " , DTHR_CEL "
                             . " , DTHR_TRANS "
                             . " , TIPO "
                             . " , EQUIP_ID "
+                            . " , LOCAL_ID "
                             . " , MATRIC_RESP "
                             . " , MATRIC_COLAB "
                             . " , DESTINO "
                             . " , NOTA_FISCAL "
                             . " , OBSERVACAO "
+                            . " , CEL_ID "
                         . " ) "
                         . " VALUES ("
                             . " TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
                             . " , TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
                             . " , SYSDATE "
                             . " , :tipo "
+                            . " , :idLocal "
                             . " , :idEquip "
                             . " , :matricVigia "
                             . " , :matricColab "
                             . " , :descrDestino "
                             . " , :nroNF "
                             . " , :observacao "
+                            . " , :idCel "
                         . " )";
 
         $this->OCI = parent::getConn();
         $result = oci_parse($this->OCI, $sql);
         oci_bind_by_name($result, ":dthr", $movEquip->dthrMovEquipProprio);
         oci_bind_by_name($result, ":tipo", $movEquip->tipoMovEquipProprio);
+        oci_bind_by_name($result, ":idLocal", $movEquip->idLocalMovEquipProprio);
         oci_bind_by_name($result, ":idEquip", $movEquip->idEquipMovEquipProprio);
         oci_bind_by_name($result, ":matricVigia", $movEquip->nroMatricVigiaMovEquipProprio);
         oci_bind_by_name($result, ":matricColab", $movEquip->nroMatricColabMovEquipProprio);
         oci_bind_by_name($result, ":descrDestino", $movEquip->descrDestinoMovEquipProprio);
         oci_bind_by_name($result, ":nroNF", $movEquip->nroNotaFiscalMovEquipProprio);
         oci_bind_by_name($result, ":observacao", $movEquip->observacaoMovEquipProprio);
+        oci_bind_by_name($result, ":idCel", $movEquip->idMovEquipProprio);
         oci_execute($result);
         
     }

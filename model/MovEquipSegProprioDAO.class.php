@@ -17,7 +17,7 @@ class MovEquipSegProprioDAO extends OCIAPEX {
         $select = " SELECT "
                         . " COUNT(*) AS QTDE "
                     . " FROM "
-                        . " MOV_EQUIP_SEG_PORTARIA "
+                        . " PORTARIA_MOV_EQUIP_SEG "
                     . " WHERE "
                         . " MOV_EQUIP_ID = " . $idMovEquipProprioBD
                         . " AND "
@@ -38,7 +38,7 @@ class MovEquipSegProprioDAO extends OCIAPEX {
 
     public function insMovEquipSeg($idMovEquipProprioBD, $movEquip) {
 
-        $sql = "INSERT INTO MOV_EQUIP_SEG_PORTARIA ("
+        $sql = "INSERT INTO PORTARIA_MOV_EQUIP_SEG ("
                         . " MOV_EQUIP_ID "
                         . " , EQUIP_ID "
                     . " ) "

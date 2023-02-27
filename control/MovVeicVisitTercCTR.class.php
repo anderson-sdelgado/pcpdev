@@ -18,9 +18,9 @@ class MovVeicVisitTercCTR {
 
         $jsonObjEquipVisitTerc = json_decode($dados);
 
-        $dadosEquipVisitTercDAO = $jsonObjEquipVisitTerc->movequipvisitterc;
+        $dadosEquipVisitTerc = $jsonObjEquipVisitTerc->movequipvisitterc;
 
-        return $this->salvarMovEquipVisitTerc($dadosEquipVisitTercDAO);
+        return $this->salvarMovEquipVisitTerc($dadosEquipVisitTerc);
 
     }
     
