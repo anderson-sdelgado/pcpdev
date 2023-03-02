@@ -10,7 +10,7 @@ require_once('../dbutil/OCI.class.php');
  *
  * @author anderson
  */
-class TerceiroDAO extends Conn {
+class TerceiroDAO extends OCI {
 
     private $Conn;
 

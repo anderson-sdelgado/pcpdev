@@ -10,7 +10,7 @@ require_once('../dbutil/OCIAPEX.class.php');
  *
  * @author anderson
  */
-class LocalDAO extends Conn {
+class LocalDAO extends OCIAPEX {
 
     private $Conn;
 
@@ -20,7 +20,9 @@ class LocalDAO extends Conn {
                         . " ID AS \"idLocal\" "
                         . " , DESCR AS \"descrLocal\" "
                     . " FROM "
-                        . " PORTARIA_LOCAL "
+                        . " PORTARIA_LOCAL"
+                    . " WHERE"
+                        . " ID <> 0 "
                     . " ORDER BY DESCR ASC ";
 
         $this->Conn = parent::getConn();

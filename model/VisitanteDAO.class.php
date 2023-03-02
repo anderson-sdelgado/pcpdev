@@ -10,7 +10,7 @@ require_once('../dbutil/OCI.class.php');
  *
  * @author anderson
  */
-class VisitanteDAO extends Conn {
+class VisitanteDAO extends OCI {
 
     private $Conn;
 
@@ -21,7 +21,10 @@ class VisitanteDAO extends Conn {
                             . " , DECODE(CD_IDENT, NULL, PK_SF_UTIL.FKG_MASCARA_CPF(CPF), CD_IDENT) AS \"cpfVisitante\" "
                             . " , NOM_VIS AS \"nomeVisitante\" "
                         . " FROM "
-                            . " VISITANTES ";
+                            . " VISITANTES V "
+                            . " , EMPR_VISITA EV "
+                        . " WHERE "
+                            . " V.EMPRVISITA_ID = EV.EMPRVISITA_ID ";
 
         $this->Conn = parent::getConn();
         $statement = oci_parse($this->Conn, $select);

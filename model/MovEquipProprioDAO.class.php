@@ -40,7 +40,7 @@ class MovEquipProprioDAO extends OCIAPEX {
     public function idMovEquip($movEquip) {
 
         $select = " SELECT "
-                        . " ID "
+                        . " ID AS ID "
                     . " FROM "
                         . " PORTARIA_MOV_EQUIP_PROPRIO "
                     . " WHERE "
@@ -83,8 +83,8 @@ class MovEquipProprioDAO extends OCIAPEX {
                             . " , TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
                             . " , SYSDATE "
                             . " , :tipo "
-                            . " , :idLocal "
                             . " , :idEquip "
+                            . " , :idLocal "
                             . " , :matricVigia "
                             . " , :matricColab "
                             . " , :descrDestino "

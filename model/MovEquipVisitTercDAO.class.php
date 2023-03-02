@@ -17,7 +17,7 @@ class MovEquipVisitTercDAO extends OCIAPEX {
         $select = " SELECT "
                         . " COUNT(*) AS QTDE "
                     . " FROM "
-                        . " PORTARIA_MOV_EQUIP_TERC "
+                        . " PORTARIA_MOV_EQUIP_VISIT_TERC "
                     . " WHERE "
                         . " DTHR_CEL = TO_DATE('" . $movEquip->dthrMovEquipVisitTerc . "','DD/MM/YYYY HH24:MI')"
                         . " AND "
@@ -41,7 +41,7 @@ class MovEquipVisitTercDAO extends OCIAPEX {
 
     public function insMovEquip($movEquip) {
 
-        $sql = "INSERT INTO PORTARIA_MOV_EQUIP_TERC ("
+        $sql = "INSERT INTO PORTARIA_MOV_EQUIP_VISIT_TERC ("
                                 . " DTHR "
                                 . " , DTHR_CEL "
                                 . " , DTHR_TRANS "

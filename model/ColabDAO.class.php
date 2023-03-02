@@ -10,7 +10,7 @@ require_once('../dbutil/OCI.class.php');
  *
  * @author anderson
  */
-class ColabDAO extends Conn {
+class ColabDAO extends OCI {
 
     private $Conn;
 

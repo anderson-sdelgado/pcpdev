@@ -11,7 +11,7 @@ require_once('../dbutil/OCI.class.php');
  *
  * @author anderson
  */
-class EquipDAO extends Conn {
+class EquipDAO extends OCI {
 
     private $Conn;
 
