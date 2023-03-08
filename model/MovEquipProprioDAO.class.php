@@ -35,6 +35,7 @@ class MovEquipProprioDAO extends OCIAPEX {
 
         oci_free_statement($stid);
         return $v;
+        
     }
 
     public function idMovEquip($movEquip) {
@@ -60,6 +61,7 @@ class MovEquipProprioDAO extends OCIAPEX {
 
         oci_free_statement($stid);
         return $v;
+        
     }
 
     public function insMovEquip($movEquip) {

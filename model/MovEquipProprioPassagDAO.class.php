@@ -6,22 +6,22 @@
  */
 require_once('../dbutil/OCIAPEX.class.php');
 /**
- * Description of MovEquipSegProprioDAO
+ * Description of MovEquipProprioPassagDAO
  *
  * @author anderson
  */
-class MovEquipSegProprioDAO extends OCIAPEX {
-
-    public function verifMovEquipSeg($idMovEquipProprioBD, $movEquip) {
+class MovEquipProprioPassagDAO extends OCIAPEX {
+    
+    public function verifMovEquipPassag($idMovEquipProprioBD, $movEquipPassag) {
 
         $select = " SELECT "
                         . " COUNT(*) AS QTDE "
                     . " FROM "
-                        . " PORTARIA_MOV_EQUIP_SEG "
+                        . " PORTARIA_MOV_EQUIP_PROPRIO_PASSAG "
                     . " WHERE "
                         . " MOV_EQUIP_ID = " . $idMovEquipProprioBD
                         . " AND "
-                        . " EQUIP_ID = " . $movEquip->idEquipMovEquipSegProprio;
+                        . " NRO_MATRIC_PASSAG = " . $movEquipPassag->matricColabMovEquipProprioPassag;
 
         $this->Conn = parent::getConn();
         $stid = oci_parse($this->Conn, $select);
@@ -36,21 +36,21 @@ class MovEquipSegProprioDAO extends OCIAPEX {
         
     }
 
-    public function insMovEquipSeg($idMovEquipProprioBD, $movEquip) {
+    public function insMovEquipPassag($idMovEquipProprioBD, $movEquipPassag) {
 
-        $sql = "INSERT INTO PORTARIA_MOV_EQUIP_SEG ("
+        $sql = "INSERT INTO PORTARIA_MOV_EQUIP_PROPRIO_PASSAG ("
                         . " MOV_EQUIP_ID "
-                        . " , EQUIP_ID "
+                        . " , NRO_MATRIC_PASSAG "
                     . " ) "
                     . " VALUES ("
-                        . " :movEquipId "
-                        . " , :equipId "
+                        . " :idMovEquip "
+                        . " , :nroMatric "
                     . " )";
 
         $this->OCI = parent::getConn();
         $result = oci_parse($this->OCI, $sql);
-        oci_bind_by_name($result, ":movEquipId", $idMovEquipProprioBD);
-        oci_bind_by_name($result, ":equipId", $movEquip->idEquipMovEquipSegProprio);
+        oci_bind_by_name($result, ":idMovEquip", $idMovEquipProprioBD);
+        oci_bind_by_name($result, ":nroMatric", $movEquipPassag->matricColabMovEquipProprioPassag);
         oci_execute($result);
         
     }

@@ -39,6 +39,34 @@ class MovEquipVisitTercDAO extends OCIAPEX {
         return $v;
     }
 
+    public function idMovEquip($movEquip) {
+
+        $select = " SELECT "
+                        . " ID AS ID "
+                    . " FROM "
+                        . " PORTARIA_MOV_EQUIP_VISIT_TERC "
+                    . " WHERE "
+                        . " DTHR_CEL = TO_DATE('" . $movEquip->dthrMovEquipVisitTerc . "','DD/MM/YYYY HH24:MI')"
+                        . " AND "
+                        . " ID_VISITANTE_TERCEIRO = " . $movEquip->idVisitTercMovEquipVisitTerc
+                        . " AND "
+                        . " TIPO = " . $movEquip->tipoMovEquipVisitTerc
+                        . " AND "
+                        . " CEL_ID = " . $movEquip->idMovEquipVisitTerc;
+
+        $this->Conn = parent::getConn();
+        $stid = oci_parse($this->Conn, $select);
+        oci_execute($stid);
+
+        while (oci_fetch($stid)) {
+            $v = oci_result($stid, 'ID');
+        }
+
+        oci_free_statement($stid);
+        return $v;
+        
+    }
+
     public function insMovEquip($movEquip) {
 
         $sql = "INSERT INTO PORTARIA_MOV_EQUIP_VISIT_TERC ("

@@ -5,7 +5,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
 require_once('../model/MovEquipProprioDAO.class.php');
-require_once('../model/MovEquipSegProprioDAO.class.php');
+require_once('../model/MovEquipProprioSegDAO.class.php');
+require_once('../model/MovEquipProprioPassagDAO.class.php');
 /**
  * Description of MovVeicProprioCTR
  *
@@ -14,27 +15,28 @@ require_once('../model/MovEquipSegProprioDAO.class.php');
 class MovVeicProprioCTR {
     
     public function salvarMovVeicProprio($info) {
-
+        
         $dados = $info['dado'];
+        $array = explode("_", $dados);
 
-        $posicao = strpos($dados, "_") + 1;
-        $movEquipProprio = substr($dados, 0, ($posicao - 1));
-        $movEquipSegProprio = substr($dados, $posicao);
-
-        $jsonObjMovEquipProprio = json_decode($movEquipProprio);
-        $jsonObjMovEquipSegProprio = json_decode($movEquipSegProprio);
-
+        $jsonObjMovEquipProprio = json_decode($array[0]);
+        $jsonObjMovEquipProprioSeg = json_decode($array[1]);
+        $jsonObjMovEquipProprioPassag = json_decode($array[2]);
+        
         $dadosMovEquipProprio = $jsonObjMovEquipProprio->movequipproprio;
-        $dadosMovEquipSegProprio = $jsonObjMovEquipSegProprio->movequipsegproprio;
+        $dadosMovEquipProprioSeg = $jsonObjMovEquipProprioSeg->movequipproprioseg;
+        $dadosMovEquipProprioPassag = $jsonObjMovEquipProprioPassag->movequippropriopassag;
 
-        return $this->salvarMovEquipProprio($dadosMovEquipProprio, $dadosMovEquipSegProprio);
+        return $this->salvarMovEquipProprio($dadosMovEquipProprio, $dadosMovEquipProprioSeg, $dadosMovEquipProprioPassag);
 
     }
     
-    private function salvarMovEquipProprio($dadosMovEquipProprio, $dadosMovEquipSegProprio) {
+    private function salvarMovEquipProprio($dadosMovEquipProprio, $dadosMovEquipProprioSeg, $dadosMovEquipProprioPassag) {
         
-        $movEquipProprioDAO = new MovEquipProprioDAO();
         $idMovEquipProprioArray = array();
+        $idMovEquipProprioSegArray = array();
+        $idMovEquipProprioPassagArray = array();
+        $movEquipProprioDAO = new MovEquipProprioDAO();
         
         foreach ($dadosMovEquipProprio as $movEquipProprio) {
             $v = $movEquipProprioDAO->verifMovEquip($movEquipProprio);
@@ -42,29 +44,59 @@ class MovVeicProprioCTR {
                 $movEquipProprioDAO->insMovEquip($movEquipProprio);
             }
             $idMovEquipProprioBD = $movEquipProprioDAO->idMovEquip($movEquipProprio);
-            $this->salvarMovEquipSegProprio($idMovEquipProprioBD, $movEquipProprio->idMovEquipProprio, $dadosMovEquipSegProprio);
+            $idMovEquipProprioSegArray = $this->salvarMovEquipProprioSeg($idMovEquipProprioBD, $movEquipProprio->idMovEquipProprio, $dadosMovEquipProprioSeg);
+            $idMovEquipProprioPassagArray = $this->salvarMovEquipProprioPassag($idMovEquipProprioBD, $movEquipProprio->idMovEquipProprio, $dadosMovEquipProprioPassag);
             $idMovEquipProprioArray[] = array("idMovEquipProprio" => $movEquipProprio->idMovEquipProprio);
         }
                 
         $dadoMovEquipProprio = array("movequipproprio"=>$idMovEquipProprioArray);
         $retMovEquipProprio = json_encode($dadoMovEquipProprio);
         
-        return 'MOVEQUIPPROPRIO_' . $retMovEquipProprio;
+        $dadoMovEquipProprioSeg = array("movequipproprioseg"=>$idMovEquipProprioSegArray);
+        $retMovEquipProprioSeg = json_encode($dadoMovEquipProprioSeg);
+        
+        $dadoMovEquipProprioPassag = array("movequippropriopassag"=>$idMovEquipProprioPassagArray);
+        $retMovEquipProprioPassag = json_encode($dadoMovEquipProprioPassag);
+        
+        return 'MOVEQUIPPROPRIO_' . $retMovEquipProprio . '_' . $retMovEquipProprioSeg . '_' . $retMovEquipProprioPassag;
     }
 
-    private function salvarMovEquipSegProprio($idMovEquipProprioBD, $idMovEquipProprioCel, $dadosMovEquipSegProprio) {
+    private function salvarMovEquipProprioSeg($idMovEquipProprioBD, $idMovEquipProprioCel, $dadosMovEquipProprioSeg) {
         
-        $movEquipSegProprioDAO = new MovEquipSegProprioDAO();
+        $idMovEquipProprioSegArray = array();
+        $movEquipProprioSegDAO = new MovEquipProprioSegDAO();
         
-        foreach ($dadosMovEquipSegProprio as $movEquipSegProprio) {
-            if ($idMovEquipProprioCel == $movEquipSegProprio->idMovEquipProprio) {
-                $v = $movEquipSegProprioDAO->verifMovEquipSeg($idMovEquipProprioBD, $movEquipSegProprio);
+        foreach ($dadosMovEquipProprioSeg as $movEquipProprioSeg) {
+            if ($idMovEquipProprioCel == $movEquipProprioSeg->idMovEquipProprio) {
+                $v = $movEquipSegProprioDAO->verifMovEquipSeg($idMovEquipProprioBD, $movEquipProprioSeg);
                 if ($v == 0) {
-                    $movEquipSegProprioDAO->insMovEquipSeg($idMovEquipProprioBD, $movEquipSegProprio);
+                    $movEquipSegProprioDAO->insMovEquipSeg($idMovEquipProprioBD, $movEquipProprioSeg);
                 }
             }
+            $idMovEquipProprioSegArray[] = array("idMovEquipProprioSeg" =>$movEquipProprioSeg->idMovEquipProprioSeg);
         }
 
+        return $idMovEquipProprioSegArray;
+        
     }
  
+    private function salvarMovEquipProprioPassag($idMovEquipProprioBD, $idMovEquipProprioCel, $dadosMovEquipProprioPassag) {
+        
+        $idMovEquipProprioPassagArray = array();
+        $movEquipProprioPassagDAO = new MovEquipProprioPassagDAO();
+        
+        foreach ($dadosMovEquipProprioPassag as $movEquipProprioPassag) {
+            if ($idMovEquipProprioCel == $movEquipProprioPassag->idMovEquipProprio) {
+                $v = $movEquipProprioPassagDAO->verifMovEquipPassag($idMovEquipProprioBD, $movEquipProprioPassag);
+                if ($v == 0) {
+                    $movEquipProprioPassagDAO->insMovEquipPassag($idMovEquipProprioBD, $movEquipProprioPassag);
+                }
+            }
+            $idMovEquipProprioPassagArray[] = array("idMovEquipProprioPassag" =>$movEquipProprioPassag->idMovEquipProprioPassag);
+        }
+
+        return $idMovEquipProprioPassagArray;
+        
+    }
+    
 }
