@@ -79,6 +79,7 @@ class MovEquipProprioDAO extends OCIAPEX {
                             . " , NOTA_FISCAL "
                             . " , OBSERVACAO "
                             . " , CEL_ID "
+                            . " , NRO_APARELHO "
                         . " ) "
                         . " VALUES ("
                             . " TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
@@ -89,10 +90,11 @@ class MovEquipProprioDAO extends OCIAPEX {
                             . " , :idLocal "
                             . " , :matricVigia "
                             . " , :matricColab "
-                            . " , :descrDestino "
+                            . " , :destino "
                             . " , :nroNF "
                             . " , :observacao "
                             . " , :idCel "
+                            . " , :nroAparelho "
                         . " )";
 
         $this->OCI = parent::getConn();
@@ -103,10 +105,11 @@ class MovEquipProprioDAO extends OCIAPEX {
         oci_bind_by_name($result, ":idEquip", $movEquip->idEquipMovEquipProprio);
         oci_bind_by_name($result, ":matricVigia", $movEquip->nroMatricVigiaMovEquipProprio);
         oci_bind_by_name($result, ":matricColab", $movEquip->nroMatricColabMovEquipProprio);
-        oci_bind_by_name($result, ":descrDestino", $movEquip->descrDestinoMovEquipProprio);
+        oci_bind_by_name($result, ":destino", $movEquip->destinoMovEquipProprio);
         oci_bind_by_name($result, ":nroNF", $movEquip->nroNotaFiscalMovEquipProprio);
-        oci_bind_by_name($result, ":observacao", $movEquip->observacaoMovEquipProprio);
+        oci_bind_by_name($result, ":observacao", $movEquip->observMovEquipProprio);
         oci_bind_by_name($result, ":idCel", $movEquip->idMovEquipProprio);
+        oci_bind_by_name($result, ":nroAparelho", $movEquip->nroAparelhoMovEquipProprio);
         oci_execute($result);
         
     }

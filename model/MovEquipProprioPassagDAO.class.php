@@ -21,7 +21,7 @@ class MovEquipProprioPassagDAO extends OCIAPEX {
                     . " WHERE "
                         . " MOV_EQUIP_ID = " . $idMovEquipProprioBD
                         . " AND "
-                        . " NRO_MATRIC_PASSAG = " . $movEquipPassag->matricColabMovEquipProprioPassag;
+                        . " NRO_MATRIC_PASSAG = " . $movEquipPassag->nroMatricMovEquipProprioPassag;
 
         $this->Conn = parent::getConn();
         $stid = oci_parse($this->Conn, $select);
@@ -50,7 +50,7 @@ class MovEquipProprioPassagDAO extends OCIAPEX {
         $this->OCI = parent::getConn();
         $result = oci_parse($this->OCI, $sql);
         oci_bind_by_name($result, ":idMovEquip", $idMovEquipProprioBD);
-        oci_bind_by_name($result, ":nroMatric", $movEquipPassag->matricColabMovEquipProprioPassag);
+        oci_bind_by_name($result, ":nroMatric", $movEquipPassag->nroMatricMovEquipProprioPassag);
         oci_execute($result);
         
     }

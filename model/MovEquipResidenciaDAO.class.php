@@ -40,31 +40,33 @@ class MovEquipResidenciaDAO extends OCIAPEX {
     public function insMovEquip($movEquip) {
 
         $sql = "INSERT INTO PORTARIA_MOV_EQUIP_RESIDENCIA ("
-                        . " DTHR "
-                        . " , DTHR_CEL "
-                        . " , DTHR_TRANS "
-                        . " , TIPO "
-                        . " , LOCAL_ID "
-                        . " , MATRIC_RESP "
-                        . " , NOME_VISITANTE "
-                        . " , VEICULO "
-                        . " , PLACA "
-                        . " , OBSERVACAO "
-                        . " , CEL_ID "
-                    . " )"
-                    . " VALUES ("
-                        . " TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
-                        . " , TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
-                        . " , SYSDATE "
-                        . " , :tipo "
-                        . " , :idLocal "
-                        . " , :matricVigia "
-                        . " , :nomeVisitante "
-                        . " , :veiculo "
-                        . " , :placa "
-                        . " , :observacao "
-                        . " , :idCel "
-                    . " )";
+                                        . " DTHR "
+                                        . " , DTHR_CEL "
+                                        . " , DTHR_TRANS "
+                                        . " , TIPO "
+                                        . " , LOCAL_ID "
+                                        . " , MATRIC_RESP "
+                                        . " , NOME_VISITANTE "
+                                        . " , VEICULO "
+                                        . " , PLACA "
+                                        . " , OBSERVACAO "
+                                        . " , CEL_ID "
+                                        . " , NRO_APARELHO "
+                                    . " )"
+                                    . " VALUES ("
+                                        . " TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
+                                        . " , TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
+                                        . " , SYSDATE "
+                                        . " , :tipo "
+                                        . " , :idLocal "
+                                        . " , :matricVigia "
+                                        . " , :nomeVisitante "
+                                        . " , :veiculo "
+                                        . " , :placa "
+                                        . " , :observacao "
+                                        . " , :idCel "
+                                        . " , :nroAparelho "
+                                    . " )";
         
         $this->OCI = parent::getConn();
         $result = oci_parse($this->OCI, $sql);
@@ -75,8 +77,9 @@ class MovEquipResidenciaDAO extends OCIAPEX {
         oci_bind_by_name($result, ":nomeVisitante", $movEquip->nomeVisitanteMovEquipResidencia);
         oci_bind_by_name($result, ":veiculo", $movEquip->veiculoMovEquipResidencia);
         oci_bind_by_name($result, ":placa", $movEquip->placaMovEquipResidencia);
-        oci_bind_by_name($result, ":observacao", $movEquip->observacaoMovEquipResidencia);
+        oci_bind_by_name($result, ":observacao", $movEquip->observMovEquipResidencia);
         oci_bind_by_name($result, ":idCel", $movEquip->idMovEquipResidencia);
+        oci_bind_by_name($result, ":nroAparelho", $movEquip->nroAparelhoMovEquipResidencia);
         oci_execute($result);
         
     }

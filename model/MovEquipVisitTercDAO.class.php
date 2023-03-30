@@ -21,7 +21,7 @@ class MovEquipVisitTercDAO extends OCIAPEX {
                     . " WHERE "
                         . " DTHR_CEL = TO_DATE('" . $movEquip->dthrMovEquipVisitTerc . "','DD/MM/YYYY HH24:MI')"
                         . " AND "
-                        . " ID_VISITANTE_TERCEIRO = " . $movEquip->idVisitTercMovEquipVisitTerc
+                        . " VISIT_TERC_ID = " . $movEquip->idVisitTercMovEquipVisitTerc
                         . " AND "
                         . " TIPO = " . $movEquip->tipoMovEquipVisitTerc
                         . " AND "
@@ -48,7 +48,7 @@ class MovEquipVisitTercDAO extends OCIAPEX {
                     . " WHERE "
                         . " DTHR_CEL = TO_DATE('" . $movEquip->dthrMovEquipVisitTerc . "','DD/MM/YYYY HH24:MI')"
                         . " AND "
-                        . " ID_VISITANTE_TERCEIRO = " . $movEquip->idVisitTercMovEquipVisitTerc
+                        . " VISIT_TERC_ID = " . $movEquip->idVisitTercMovEquipVisitTerc
                         . " AND "
                         . " TIPO = " . $movEquip->tipoMovEquipVisitTerc
                         . " AND "
@@ -75,14 +75,15 @@ class MovEquipVisitTercDAO extends OCIAPEX {
                                 . " , DTHR_TRANS "
                                 . " , TIPO "
                                 . " , LOCAL_ID "
-                                . " , ID_VISITANTE_TERCEIRO "
-                                . " , TIPO_VISITANTE_TERCEIRO "
+                                . " , VISIT_TERC_ID "
+                                . " , VISIT_TERC_TIPO "
                                 . " , MATRIC_RESP "
                                 . " , VEICULO "
                                 . " , PLACA "
                                 . " , DESTINO "
                                 . " , OBSERVACAO "
                                 . " , CEL_ID "
+                                . " , NRO_APARELHO "
                             . " )"
                             . " VALUES ("
                                 . " TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
@@ -98,6 +99,7 @@ class MovEquipVisitTercDAO extends OCIAPEX {
                                 . " , :destino "
                                 . " , :observacao "
                                 . " , :idCel "
+                                . " , :nroAparelho "
                             . " )";
         
         $this->OCI = parent::getConn();
@@ -111,8 +113,9 @@ class MovEquipVisitTercDAO extends OCIAPEX {
         oci_bind_by_name($result, ":veiculo", $movEquip->veiculoMovEquipVisitTerc);
         oci_bind_by_name($result, ":placa", $movEquip->placaMovEquipVisitTerc);
         oci_bind_by_name($result, ":destino", $movEquip->destinoMovEquipVisitTerc);
-        oci_bind_by_name($result, ":observacao", $movEquip->observacaoMovEquipVisitTerc);
+        oci_bind_by_name($result, ":observacao", $movEquip->observMovEquipVisitTerc);
         oci_bind_by_name($result, ":idCel", $movEquip->idMovEquipVisitTerc);
+        oci_bind_by_name($result, ":nroAparelho", $movEquip->nroAparelhoMovEquipVisitTerc);
         oci_execute($result);
         
     }

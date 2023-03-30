@@ -68,9 +68,9 @@ class MovVeicProprioCTR {
         
         foreach ($dadosMovEquipProprioSeg as $movEquipProprioSeg) {
             if ($idMovEquipProprioCel == $movEquipProprioSeg->idMovEquipProprio) {
-                $v = $movEquipSegProprioDAO->verifMovEquipSeg($idMovEquipProprioBD, $movEquipProprioSeg);
+                $v = $movEquipProprioSegDAO->verifMovEquipSeg($idMovEquipProprioBD, $movEquipProprioSeg);
                 if ($v == 0) {
-                    $movEquipSegProprioDAO->insMovEquipSeg($idMovEquipProprioBD, $movEquipProprioSeg);
+                    $movEquipProprioSegDAO->insMovEquipSeg($idMovEquipProprioBD, $movEquipProprioSeg);
                 }
             }
             $idMovEquipProprioSegArray[] = array("idMovEquipProprioSeg" =>$movEquipProprioSeg->idMovEquipProprioSeg);

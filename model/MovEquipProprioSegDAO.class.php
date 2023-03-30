@@ -21,7 +21,7 @@ class MovEquipProprioSegDAO extends OCIAPEX {
                     . " WHERE "
                         . " MOV_EQUIP_ID = " . $idMovEquipProprioBD
                         . " AND "
-                        . " EQUIP_ID = " . $movEquipSeg->idEquipMovEquipSegProprio;
+                        . " EQUIP_ID = " . $movEquipSeg->idEquipMovEquipProprioSeg;
 
         $this->Conn = parent::getConn();
         $stid = oci_parse($this->Conn, $select);
@@ -50,7 +50,7 @@ class MovEquipProprioSegDAO extends OCIAPEX {
         $this->OCI = parent::getConn();
         $result = oci_parse($this->OCI, $sql);
         oci_bind_by_name($result, ":idMovEquip", $idMovEquipProprioBD);
-        oci_bind_by_name($result, ":idEquip", $movEquipSeg->idEquipMovEquipSegProprio);
+        oci_bind_by_name($result, ":idEquip", $movEquipSeg->idEquipMovEquipProprioSeg);
         oci_execute($result);
         
     }
