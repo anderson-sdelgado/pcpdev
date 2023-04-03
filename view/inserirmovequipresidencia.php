@@ -1,12 +1,14 @@
 <?php
 
-$info = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+require_once('../control/MovEquipResidenciaCTR.class.php');
 
-require_once('../control/MovVeicResidenciaCTR.class.php');
+header('Content-type: application/json');
+$body = file_get_contents('php://input');
 
-if (isset($info)):
+if (isset($body)):
 
-    $movVeicResidenciaCTR = new MovVeicResidenciaCTR();
-    echo $movVeicResidenciaCTR->salvarMovVeicResidencia($info);
+    $movEquipResidenciaCTR = new MovEquipResidenciaCTR();
+    $idMovArray = $movEquipResidenciaCTR->salvarMovEquipResidencia($body);
+    echo json_encode($idMovArray);
 
 endif;

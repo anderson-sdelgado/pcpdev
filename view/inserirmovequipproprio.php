@@ -1,12 +1,14 @@
 <?php
 
-$info = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+require_once('../control/MovEquipProprioCTR.class.php');
 
-require_once('../control/MovVeicProprioCTR.class.php');
+header('Content-type: application/json');
+$body = file_get_contents('php://input');
 
-if (isset($info)):
+if (isset($body)):
 
-    $movVeicProprioCTR = new MovVeicProprioCTR();
-    echo $movVeicProprioCTR->salvarMovVeicProprio($info);
-
+    $movEquipProprioCTR = new MovEquipProprioCTR();
+    $idMovArray = $movEquipProprioCTR->salvarMovEquipProprio($body);
+    echo json_encode($idMovArray);
+    
 endif;
