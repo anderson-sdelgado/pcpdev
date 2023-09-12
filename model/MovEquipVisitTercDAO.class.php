@@ -36,6 +36,7 @@ class MovEquipVisitTercDAO extends OCIAPEX {
         }
 
         oci_free_statement($stid);
+        
         return $v;
     }
 
@@ -63,6 +64,7 @@ class MovEquipVisitTercDAO extends OCIAPEX {
         }
 
         oci_free_statement($stid);
+        
         return $v;
         
     }

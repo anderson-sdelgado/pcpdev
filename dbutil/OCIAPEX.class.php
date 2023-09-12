@@ -28,7 +28,7 @@ class OCIAPEX {
                             )
                           )";
 
-                self::$Connect = oci_connect('STAFE', 'sta1553', $tns, 'AL32UTF8');
+                self::$Connect = oci_connect('STAFE', 'STA1553', $tns, 'AL32UTF8');
                 
             }
         } catch (PDOException $e) {

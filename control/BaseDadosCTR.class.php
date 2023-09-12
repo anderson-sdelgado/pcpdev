@@ -5,6 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+require_once('../control/AtualAplicCTR.class.php');
 require_once('../model/ColabDAO.class.php');
 require_once('../model/EquipDAO.class.php');
 require_once('../model/LocalDAO.class.php');
@@ -17,59 +18,88 @@ require_once('../model/VisitanteDAO.class.php');
  */
 class BaseDadosCTR {
 
-    public function dadosColab() {
+    public function dadosColab($info) {
 
-        $colabDAO = new ColabDAO();
+        $atualAplicCTR = new AtualAplicCTR();
+        
+        if($atualAplicCTR->verifToken($info)){
+        
+            $colabDAO = new ColabDAO();
 
-        $dados = array("dados" => $colabDAO->dados());
-        $retJson = json_encode($dados);
+            $dados = array("dados" => $colabDAO->dados());
+            $retJson = json_encode($dados);
 
-        return $retJson;
+            return $retJson;
+        
+        }
 
     }
     
-    public function dadosEquip() {
+    public function dadosEquip($info) {
 
-        $equipDAO = new EquipDAO();
+        $atualAplicCTR = new AtualAplicCTR();
+        
+        if($atualAplicCTR->verifToken($info)){
+        
+            $equipDAO = new EquipDAO();
 
-        $dados = array("dados" => $equipDAO->dados());
-        $retJson = json_encode($dados);
+            $dados = array("dados" => $equipDAO->dados());
+            $retJson = json_encode($dados);
 
-        return $retJson;
-
+            return $retJson;
+        
+        }
     }
         
-    public function dadosLocal() {
+    public function dadosLocal($info) {
 
-        $localDAO = new LocalDAO();
+        $atualAplicCTR = new AtualAplicCTR();
+        
+        if($atualAplicCTR->verifToken($info)){
+        
+            $localDAO = new LocalDAO();
 
-        $dados = array("dados" => $localDAO->dados());
-        $retJson = json_encode($dados);
+            $dados = array("dados" => $localDAO->dados());
+            $retJson = json_encode($dados);
 
-        return $retJson;
-
-    }
-    
-    public function dadosTerceiro() {
-
-        $terceiroDAO = new TerceiroDAO();
-
-        $dados = array("dados" => $terceiroDAO->dados());
-        $retJson = json_encode($dados);
-
-        return $retJson;
+            return $retJson;
+        
+        }
 
     }
     
-    public function dadosVisitante() {
+    public function dadosTerceiro($info) {
 
-        $visitanteDAO = new VisitanteDAO();
+        $atualAplicCTR = new AtualAplicCTR();
+        
+        if($atualAplicCTR->verifToken($info)){
+        
+            $terceiroDAO = new TerceiroDAO();
 
-        $dados = array("dados" => $visitanteDAO->dados());
-        $retJson = json_encode($dados);
+            $dados = array("dados" => $terceiroDAO->dados());
+            $retJson = json_encode($dados);
 
-        return $retJson;
+            return $retJson;
+                
+        }
+        
+    }
+    
+    public function dadosVisitante($info) {
 
+        $atualAplicCTR = new AtualAplicCTR();
+        
+        if($atualAplicCTR->verifToken($info)){
+        
+            $visitanteDAO = new VisitanteDAO();
+
+            $dados = array("dados" => $visitanteDAO->dados());
+            $retJson = json_encode($dados);
+
+            return $retJson;
+
+        }
+        
     }
     
 }
