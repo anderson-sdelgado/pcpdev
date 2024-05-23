@@ -13,17 +13,10 @@ require_once('../model/AtualAplicDAO.class.php');
  */
 class AtualAplicCTR {
     
-    public function inserirDados($info){
+    public function inserirDados($body){
         
-        $jsonObj = json_decode($info['dado']);
-        $dados = $jsonObj->dados;
-
-        foreach ($dados as $d) {
-            $nroAparelho = $d->nroAparelho;
-            $versao = $d->versao;
-        }
-        
-        return $this->inserirAtualVersao($nroAparelho, $versao);
+        $config = json_decode($body);
+        return $this->inserirAtualVersao($config->nroAparelho, $config->version);
         
     }
     
@@ -35,8 +28,8 @@ class AtualAplicCTR {
         } else {
             $atualAplicDAO->updAtual($nroAparelho, $versao);
         }
-        $dado = array("nroAparelho" => $nroAparelho);
-        return json_encode(array("dados" =>array($dado)));
+        $id = $atualAplicDAO->idAtual($nroAparelho);
+        return array("idBD" => $id);
     }
 
     public function verifToken($info){
@@ -59,12 +52,11 @@ class AtualAplicCTR {
         
     }
     
-    public function verToken($headers){
+    public function verToken($token){
         
-        $token = trim(substr($headers['Authorization'], 6));
+        $token = trim(substr($token, 6));
         $atualAplicDAO = new AtualAplicDAO();
         $v = $atualAplicDAO->verToken($token);
-        
         if ($v > 0) {
             return true;
         } else {

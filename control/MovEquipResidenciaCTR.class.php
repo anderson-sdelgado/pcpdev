@@ -24,10 +24,7 @@ class MovEquipResidenciaCTR {
     
     private function salvarMovEquip($movEquipResidencia) {
         $movEquipResidenciaDAO = new MovEquipResidenciaDAO();
-        $v = $movEquipResidenciaDAO->verifMovEquip($movEquipResidencia);
-        if ($v == 0) {
-            $movEquipResidenciaDAO->insMovEquip($movEquipResidencia);
-        }
+        $movEquipResidenciaDAO->insMovEquip($movEquipResidencia);
     }
  
 }

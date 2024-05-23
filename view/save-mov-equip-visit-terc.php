@@ -1,9 +1,13 @@
 <?php
 
+require_once('../control/MovEquipVisitTercCTR.class.php');
+require_once('../control/AtualAplicCTR.class.php');
+
 $headers = getallheaders();
 header('Content-type: application/json');
+$body = file_get_contents('php://input');
 
-if (!array_key_exists('Authorization', $headers) && !array_key_exists('authorization', $headers)) {
+if (!array_key_exists('Authorization', $headers)) {
     echo json_encode(["error" => "Authorization header is missing"]);
     exit;
 }
@@ -24,7 +28,11 @@ if (!$atualAplicCTR->verToken($token)){
     exit;
 }
 
-require_once('../control/DataBaseCTR.class.php');
+if (!isset($body)){
+    echo json_encode(["error" => "Empty body"]);
+    exit;
+}
 
-$dataBaseCTR = new DataBaseCTR();
-echo $dataBaseCTR->dadosTerceiro();
+$movEquipVisitTercCTR = new MovEquipVisitTercCTR();
+$idMovArray = $movEquipVisitTercCTR->salvarMovVeicVisitTerc($body);
+echo json_encode($idMovArray);

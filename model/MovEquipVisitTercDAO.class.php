@@ -12,67 +12,11 @@ require_once('../dbutil/OCIAPEX.class.php');
  */
 class MovEquipVisitTercDAO extends OCIAPEX {
 
-    public function verifMovEquip($movEquip) {
-
-        $select = " SELECT "
-                        . " COUNT(*) AS QTDE "
-                    . " FROM "
-                        . " PORTARIA_MOV_EQUIP_VISIT_TERC "
-                    . " WHERE "
-                        . " DTHR_CEL = TO_DATE('" . $movEquip->dthrMovEquipVisitTerc . "','DD/MM/YYYY HH24:MI')"
-                        . " AND "
-                        . " VISIT_TERC_ID = " . $movEquip->idVisitTercMovEquipVisitTerc
-                        . " AND "
-                        . " TIPO = " . $movEquip->tipoMovEquipVisitTerc
-                        . " AND "
-                        . " CEL_ID = " . $movEquip->idMovEquipVisitTerc;
-
-        $this->Conn = parent::getConn();
-        $stid = oci_parse($this->Conn, $select);
-        oci_execute($stid);
-
-        while (oci_fetch($stid)) {
-            $v = oci_result($stid, 'QTDE');
-        }
-
-        oci_free_statement($stid);
-        
-        return $v;
-    }
-
-    public function idMovEquip($movEquip) {
-
-        $select = " SELECT "
-                        . " ID AS ID "
-                    . " FROM "
-                        . " PORTARIA_MOV_EQUIP_VISIT_TERC "
-                    . " WHERE "
-                        . " DTHR_CEL = TO_DATE('" . $movEquip->dthrMovEquipVisitTerc . "','DD/MM/YYYY HH24:MI')"
-                        . " AND "
-                        . " VISIT_TERC_ID = " . $movEquip->idVisitTercMovEquipVisitTerc
-                        . " AND "
-                        . " TIPO = " . $movEquip->tipoMovEquipVisitTerc
-                        . " AND "
-                        . " CEL_ID = " . $movEquip->idMovEquipVisitTerc;
-
-        $this->Conn = parent::getConn();
-        $stid = oci_parse($this->Conn, $select);
-        oci_execute($stid);
-
-        while (oci_fetch($stid)) {
-            $v = oci_result($stid, 'ID');
-        }
-
-        oci_free_statement($stid);
-        
-        return $v;
-        
-    }
-
     public function insMovEquip($movEquip) {
 
-        $sql = "INSERT INTO PORTARIA_MOV_EQUIP_VISIT_TERC ("
-                                . " DTHR "
+        $sql = "INSERT INTO INTERFACE_PORTARIA_MOV_EQUIP_VISIT_TERC ("
+                                . " ID "
+                                . " , DTHR "
                                 . " , DTHR_CEL "
                                 . " , DTHR_TRANS "
                                 . " , TIPO "
@@ -84,11 +28,11 @@ class MovEquipVisitTercDAO extends OCIAPEX {
                                 . " , PLACA "
                                 . " , DESTINO "
                                 . " , OBSERVACAO "
-                                . " , CEL_ID "
                                 . " , NRO_APARELHO "
                             . " )"
                             . " VALUES ("
-                                . " TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
+                                . " :idCel "
+                                . " , TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
                                 . " , TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
                                 . " , SYSDATE "
                                 . " , :tipo "
@@ -100,12 +44,12 @@ class MovEquipVisitTercDAO extends OCIAPEX {
                                 . " , :placa "
                                 . " , :destino "
                                 . " , :observacao "
-                                . " , :idCel "
                                 . " , :nroAparelho "
                             . " )";
-        
+
         $this->OCI = parent::getConn();
         $result = oci_parse($this->OCI, $sql);
+        oci_bind_by_name($result, ":idCel", $movEquip->idMovEquipVisitTerc);
         oci_bind_by_name($result, ":dthr", $movEquip->dthrMovEquipVisitTerc);
         oci_bind_by_name($result, ":tipo", $movEquip->tipoMovEquipVisitTerc);
         oci_bind_by_name($result, ":idLocal", $movEquip->idLocalMovEquipVisitTerc);
@@ -116,7 +60,6 @@ class MovEquipVisitTercDAO extends OCIAPEX {
         oci_bind_by_name($result, ":placa", $movEquip->placaMovEquipVisitTerc);
         oci_bind_by_name($result, ":destino", $movEquip->destinoMovEquipVisitTerc);
         oci_bind_by_name($result, ":observacao", $movEquip->observMovEquipVisitTerc);
-        oci_bind_by_name($result, ":idCel", $movEquip->idMovEquipVisitTerc);
         oci_bind_by_name($result, ":nroAparelho", $movEquip->nroAparelhoMovEquipVisitTerc);
         oci_execute($result);
         

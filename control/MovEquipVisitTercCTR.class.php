@@ -17,8 +17,8 @@ class MovEquipVisitTercCTR {
         $idMovEquipVisitTercArray = array();
         $movEquipVisitTercArray = json_decode($body);
         foreach($movEquipVisitTercArray as $movEquipVisitTerc){
-            $idMovEquipBD = $this->salvarMovEquipVisitTerc($movEquipVisitTerc);
-            $this->salvarMovEquipVisitTercPassag($idMovEquipBD, $movEquipVisitTerc->movEquipVisitTercPassagList);
+            $this->salvarMovEquipVisitTerc($movEquipVisitTerc);
+            $this->salvarMovEquipVisitTercPassag($movEquipVisitTerc, $movEquipVisitTerc->movEquipVisitTercPassagList);
             $idMovEquipVisitTercArray[] = array("idMovEquipVisitTerc" => $movEquipVisitTerc->idMovEquipVisitTerc);
         }
         return $idMovEquipVisitTercArray;
@@ -26,20 +26,13 @@ class MovEquipVisitTercCTR {
 
     private function salvarMovEquipVisitTerc($movEquipVisitTerc) {
         $movEquipVisitTercDAO = new MovEquipVisitTercDAO();
-        $v = $movEquipVisitTercDAO->verifMovEquip($movEquipVisitTerc);
-        if ($v == 0) {
-            $movEquipVisitTercDAO->insMovEquip($movEquipVisitTerc);
-        }
-        return $movEquipVisitTercDAO->idMovEquip($movEquipVisitTerc);
+        $movEquipVisitTercDAO->insMovEquip($movEquipVisitTerc);
     }
   
-    private function salvarMovEquipVisitTercPassag($idMovEquipProprioBD, $dadosMovEquipVisitTercPassag) {
+    private function salvarMovEquipVisitTercPassag($movEquipVisitTerc, $dadosMovEquipVisitTercPassag) {
         $movEquipVisitTercPassagDAO = new MovEquipVisitTercPassagDAO();
         foreach ($dadosMovEquipVisitTercPassag as $movEquipVisitTercPassag) {
-            $v = $movEquipVisitTercPassagDAO->verifMovEquipPassag($idMovEquipProprioBD, $movEquipVisitTercPassag);
-            if ($v == 0) {
-                $movEquipVisitTercPassagDAO->insMovEquipPassag($idMovEquipProprioBD, $movEquipVisitTercPassag);
-            }
+            $movEquipVisitTercPassagDAO->insMovEquipPassag($movEquipVisitTerc, $movEquipVisitTercPassag);
         }
     }
     

@@ -12,35 +12,11 @@ require_once('../dbutil/OCIAPEX.class.php');
  */
 class MovEquipResidenciaDAO extends OCIAPEX {
 
-    public function verifMovEquip($movEquip) {
-
-        $select = " SELECT "
-                        . " COUNT(*) AS QTDE "
-                    . " FROM "
-                        . " PORTARIA_MOV_EQUIP_RESIDENCIA "
-                    . " WHERE "
-                        . " DTHR_CEL = TO_DATE('" . $movEquip->dthrMovEquipResidencia . "','DD/MM/YYYY HH24:MI')"
-                        . " AND "
-                        . " TIPO = " . $movEquip->tipoMovEquipResidencia
-                        . " AND "
-                        . " CEL_ID = " . $movEquip->idMovEquipResidencia;
-
-        $this->Conn = parent::getConn();
-        $stid = oci_parse($this->Conn, $select);
-        oci_execute($stid);
-
-        while (oci_fetch($stid)) {
-            $v = oci_result($stid, 'QTDE');
-        }
-
-        oci_free_statement($stid);
-        return $v;
-    }
-
     public function insMovEquip($movEquip) {
 
-        $sql = "INSERT INTO PORTARIA_MOV_EQUIP_RESIDENCIA ("
-                                        . " DTHR "
+        $sql = "INSERT INTO INTERFACE_PORTARIA_MOV_EQUIP_RESIDENCIA ("
+                                        . " ID "
+                                        . " , DTHR "
                                         . " , DTHR_CEL "
                                         . " , DTHR_TRANS "
                                         . " , TIPO "
@@ -50,11 +26,11 @@ class MovEquipResidenciaDAO extends OCIAPEX {
                                         . " , VEICULO "
                                         . " , PLACA "
                                         . " , OBSERVACAO "
-                                        . " , CEL_ID "
                                         . " , NRO_APARELHO "
                                     . " )"
                                     . " VALUES ("
-                                        . " TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
+                                        . " :idCel "
+                                        . " , TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
                                         . " , TO_DATE(:dthr , 'DD/MM/YYYY HH24:MI')"
                                         . " , SYSDATE "
                                         . " , :tipo "
@@ -64,7 +40,6 @@ class MovEquipResidenciaDAO extends OCIAPEX {
                                         . " , :veiculo "
                                         . " , :placa "
                                         . " , :observacao "
-                                        . " , :idCel "
                                         . " , :nroAparelho "
                                     . " )";
         

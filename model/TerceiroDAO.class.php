@@ -17,16 +17,20 @@ class TerceiroDAO extends OCI {
     public function dados() {
 
         $select = " SELECT DISTINCT "
-                                . " CO.CORR_ID AS \"idTerceiro\" "
+                                . " CO.CORR_ID AS \"idBDTerceiro\" "
                                 . " , PK_SF_UTIL.FKG_MASCARA_CPF(PF.NRO_CPF) AS \"cpfTerceiro\" "
                                 . " , CO.NOME AS \"nomeTerceiro\" "
-                            . " FROM CONTRATO_DIVERSO  CD "
+                                . " , CO2.NOME AS \"empresaTerceiro\" "
+                            . " FROM "
+                                . " CONTRATO_DIVERSO  CD "
                                 . " , CONTR_DIV_PESSOAS CDP "
                                 . " , PESSOAS           PE "
                                 . " , CORR              CO "
                                 . " , REG_DEM_PESSOA    RD "
                                 . " , CORR_PF           CP "
                                 . " , PF                PF "
+                                . " , FORN              FO "
+                                . " , CORR              CO2 "
                             . " WHERE "
                                 . " SYSDATE BETWEEN CD.DATA_INICIAL AND CD.DATA_FINAL "
                                 . " AND "
@@ -40,9 +44,14 @@ class TerceiroDAO extends OCI {
                                 . " AND "
                                 . " PF.PF_ID          = CP.PF_ID "
                                 . " AND "
+                                . " CD.FORN_ID        = FO.FORN_ID "
+                                . " AND "
+                                . " FO.CORR_ID        = CO2.CORR_ID "
+                                . " AND "
                                 . " RD.PESSOAS_ID(+)  = PE.PESSOAS_ID "
                                 . " AND "
-                                . " RD.DT IS NULL ";
+                                . " RD.DT IS NULL "
+                                . " ORDER BY CO.NOME ASC ";
 
         $this->Conn = parent::getConn();
         $statement = oci_parse($this->Conn, $select);

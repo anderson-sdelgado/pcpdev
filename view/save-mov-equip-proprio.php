@@ -5,10 +5,26 @@ require_once('../control/AtualAplicCTR.class.php');
 
 $headers = getallheaders();
 header('Content-type: application/json');
-$body = file_get_contents('php://input');;
+$body = file_get_contents('php://input');
 
 if (!array_key_exists('Authorization', $headers)) {
     echo json_encode(["error" => "Authorization header is missing"]);
+    exit;
+}
+
+if(array_key_exists('Authorization', $headers)){
+    $token = $headers['Authorization'];
+}
+
+if(array_key_exists('authorization', $headers)){
+    $token = $headers['authorization'];
+}
+
+require_once('../control/AtualAplicCTR.class.php');
+
+$atualAplicCTR = new AtualAplicCTR();
+if (!$atualAplicCTR->verToken($token)){
+    echo json_encode(["error" => "Invalid token"]);
     exit;
 }
 
@@ -17,12 +33,5 @@ if (!isset($body)){
     exit;
 }
 
-$atualAplicCTR = new AtualAplicCTR();
-if (!$atualAplicCTR->verToken($headers)){
-    echo json_encode(["error" => "Invalid token"]);
-    exit;
-}
-
 $movEquipProprioCTR = new MovEquipProprioCTR();
-$idMovArray = $movEquipProprioCTR->salvarMovEquipProprio($body);
-echo json_encode($idMovArray);
+echo $movEquipProprioCTR->salvarMovEquipProprio($body);

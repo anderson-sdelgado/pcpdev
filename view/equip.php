@@ -1,12 +1,32 @@
 <?php
 
-$info = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+$headers = getallheaders();
+header('Content-type: application/json');
 
-require_once('../control/BaseDadosCTR.class.php');
+$token = '';
 
-if (isset($info)):
+if (!array_key_exists('Authorization', $headers) && !array_key_exists('authorization', $headers)) {
+    echo json_encode(["error" => "Authorization header is missing"]);
+    exit;
+}
 
-    $baseDadosCTR = new BaseDadosCTR();
-    echo $retorno = $baseDadosCTR->dadosEquip($info);
+if(array_key_exists('Authorization', $headers)){
+    $token = $headers['Authorization'];
+}
 
-endif;
+if(array_key_exists('authorization', $headers)){
+    $token = $headers['authorization'];
+}
+
+require_once('../control/AtualAplicCTR.class.php');
+
+$atualAplicCTR = new AtualAplicCTR();
+if (!$atualAplicCTR->verToken($token)){
+    echo json_encode(["error" => "Invalid token"]);
+    exit;
+}
+
+require_once('../control/DataBaseCTR.class.php');
+
+$dataBaseCTR = new DataBaseCTR();
+echo $dataBaseCTR->dadosEquip();

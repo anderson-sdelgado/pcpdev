@@ -18,7 +18,7 @@ class ColabDAO extends OCI {
 
         $select = " SELECT "
                         . " COLAB.CD AS \"matricColab\" "
-                        . " , CORR.NOME AS \"nomeColab\" "
+                        . " , CARACTER(CORR.NOME) AS \"nomeColab\" "
                     . " FROM "
                         . " COLAB COLAB "
                         . " , CORR CORR "

@@ -42,6 +42,28 @@ class AtualAplicDAO extends OCI {
 
     }
     
+    public function idAtual($nroAparelho) {
+
+        $select = "SELECT "
+                    . " ID AS ID "
+                . " FROM "
+                    . " PCP_ATUAL "
+                . " WHERE "
+                    . " NRO_APARELHO = " . $nroAparelho;
+
+        $this->Conn = parent::getConn();
+        $stid = oci_parse($this->Conn, $select);
+        oci_execute($stid);
+
+        while (oci_fetch($stid)) {
+            $v = oci_result($stid, 'ID');
+        }
+
+        oci_free_statement($stid);
+        return $v;
+
+    }
+    
     public function verToken($token) {
 
         $select = "SELECT "
@@ -66,17 +88,17 @@ class AtualAplicDAO extends OCI {
     public function insAtual($nroAparelho, $versao) {
 
         $sql = "INSERT INTO PCP_ATUAL ("
-                    . " NRO_APARELHO "
-                    . " , VERSAO "
-                    . " , DTHR_ULT_ACESSO "
-                    . " , TOKEN "
-                . " ) "
-                . " VALUES ("
-                    . " :nroAparelho "
-                    . " , :versao "
-                    . " , SYSDATE "
-                    . " , :token "
-                . " )";
+                        . " NRO_APARELHO "
+                        . " , VERSAO "
+                        . " , DTHR_ULT_ACESSO "
+                        . " , TOKEN "
+                    . " ) "
+                    . " VALUES ("
+                        . " :nroAparelho "
+                        . " , :versao "
+                        . " , SYSDATE "
+                        . " , :token "
+                    . " )";
 
         $this->OCI = parent::getConn();
         $result = oci_parse($this->OCI, $sql);
@@ -89,8 +111,7 @@ class AtualAplicDAO extends OCI {
 
     public function updAtual($nroAparelho, $versao) {
 
-        $sql = "UPDATE PCP_ATUAL "
-                    . " SET "
+        $sql = "UPDATE PCP_ATUAL SET "
                     . " VERSAO = :versao"
                     . " , DTHR_ULT_ACESSO = SYSDATE "
                     . " , TOKEN = :token"

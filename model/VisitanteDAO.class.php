@@ -17,9 +17,10 @@ class VisitanteDAO extends OCI {
     public function dados() {
 
         $select = " SELECT " 
-                            . " VISITANTES_ID AS \"idVisitante\" "
-                            . " , DECODE(CD_IDENT, NULL, PK_SF_UTIL.FKG_MASCARA_CPF(CPF), CD_IDENT) AS \"cpfVisitante\" "
-                            . " , NOM_VIS AS \"nomeVisitante\" "
+                            . " V.VISITANTES_ID AS \"idVisitante\" "
+                            . " , DECODE(V.CD_IDENT, NULL, PK_SF_UTIL.FKG_MASCARA_CPF(V.CPF), V.CD_IDENT) AS \"cpfVisitante\" "
+                            . " , REGEXP_REPLACE(CARACTER(V.NOM_VIS), '([[:space:]]{2,}|[[:cntrl:]])', '') AS \"nomeVisitante\" "
+                            . " , TO_CHAR(CARACTER(EV.NOME)) AS \"empresaVisitante\" "
                         . " FROM "
                             . " VISITANTES V "
                             . " , EMPR_VISITA EV "
